@@ -5,8 +5,37 @@
 #include "MainFrame.h"
 #include "FileSystem.h"
 
+class FileListComparator final : public wxTreeListItemComparator
+{
+    int Compare(wxTreeListCtrl *treelist, unsigned column, wxTreeListItem first, wxTreeListItem second) override
+    {
+        auto firstText = treelist->GetItemText(first, column);
+        auto secondText = treelist->GetItemText(second, column);
+
+        // if not the size column, do a string compare
+        if(column != 2)
+            return firstText.compare(secondText);
+
+        long firstV = 0, secondV = 0;
+
+        // fall back to 0 if failed
+        firstText.ToLong(&firstV);
+        secondText.ToLong(&secondV);
+
+        return firstV - secondV;
+    }
+};
+
+static FileListComparator fileListComp;
+
 MainFrame::MainFrame() : MainFrameBase(nullptr)
 {
+    // set custom comparator
+    fileTree->SetItemComparator(&fileListComp);
+
+    // default to sorting by name
+    fileTree->SetSortColumn(0);
+
     buildFileList("", fileTree->GetRootItem());
 }
 
