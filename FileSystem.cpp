@@ -69,6 +69,11 @@ void FileSystem::mount(std::shared_ptr<FileSystemMount> mount, std::string mount
     mounts.emplace(mountPath, mount);
 }
 
+void FileSystem::unmountAll()
+{
+    mounts.clear();
+}
+
 std::tuple<std::shared_ptr<FileSystemMount>, std::string_view> FileSystem::findMount(std::string_view path)
 {
     // find first mount with path that matches

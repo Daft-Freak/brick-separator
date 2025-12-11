@@ -15,14 +15,14 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 
 	mainMenuBar = new wxMenuBar( 0 );
 	fileMenu = new wxMenu();
-	wxMenuItem* m_menuItem1;
-	m_menuItem1 = new wxMenuItem( fileMenu, wxID_ANY, wxString( _("&Open Folder") ) , wxEmptyString, wxITEM_NORMAL );
+	wxMenuItem* openFolderItem;
+	openFolderItem = new wxMenuItem( fileMenu, wxID_ANY, wxString( _("&Open Folder") ) , wxEmptyString, wxITEM_NORMAL );
 	#ifdef __WXMSW__
-	m_menuItem1->SetBitmaps( wxNullBitmap );
+	openFolderItem->SetBitmaps( wxNullBitmap );
 	#elif (defined( __WXGTK__ ) || defined( __WXOSX__ ))
-	m_menuItem1->SetBitmap( wxNullBitmap );
+	openFolderItem->SetBitmap( wxNullBitmap );
 	#endif
-	fileMenu->Append( m_menuItem1 );
+	fileMenu->Append( openFolderItem );
 
 	mainMenuBar->Append( fileMenu, _("&File") );
 
@@ -48,6 +48,9 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	this->Layout();
 
 	this->Centre( wxBOTH );
+
+	// Connect Events
+	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onOpenFolder ), this, openFolderItem->GetId());
 }
 
 MainFrameBase::~MainFrameBase()

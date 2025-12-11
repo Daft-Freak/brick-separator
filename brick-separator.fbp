@@ -94,10 +94,11 @@
             <property name="id">wxID_ANY</property>
             <property name="kind">wxITEM_NORMAL</property>
             <property name="label">&amp;Open Folder</property>
-            <property name="name">m_menuItem1</property>
+            <property name="name">openFolderItem</property>
             <property name="permission">none</property>
             <property name="shortcut"></property>
             <property name="unchecked_bitmap"></property>
+            <event name="OnMenuSelection">onOpenFolder</event>
           </object>
         </object>
       </object>

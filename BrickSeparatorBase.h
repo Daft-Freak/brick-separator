@@ -39,6 +39,10 @@ class MainFrameBase : public wxFrame
 		wxTreeListCtrl* fileTree;
 		wxPanel* m_panel1;
 
+		// Virtual event handlers, override them in your derived class
+		virtual void onOpenFolder( wxCommandEvent& event ) { event.Skip(); }
+
+
 	public:
 
 		MainFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Brick Separator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );

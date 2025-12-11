@@ -9,6 +9,9 @@ public:
     MainFrame();
 
 private:
+    // events
+    void onOpenFolder(wxCommandEvent& event) override;
+
     void buildFileList(std::filesystem::path path, wxTreeListItem parent);
 
     FileSystem fs;

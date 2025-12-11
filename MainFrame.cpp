@@ -1,11 +1,31 @@
 #include <iostream>
 
+#include <wx/dirdlg.h>
+
 #include "MainFrame.h"
 #include "FileSystem.h"
 
 MainFrame::MainFrame() : MainFrameBase(nullptr)
 {
     buildFileList("", fileTree->GetRootItem());
+}
+
+void MainFrame::onOpenFolder(wxCommandEvent& event)
+{
+    wxDirDialog dirDialog(this, "Choose folder", "", wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
+
+    if(dirDialog.ShowModal() == wxID_OK)
+    {
+        // clear old mounts/items
+        fs.unmountAll();
+        fileTree->DeleteAllItems();
+
+        // mount new dir
+        fs.mount(std::make_shared<DirectoryMount>(dirDialog.GetPath().ToStdString()), "");
+
+        // rebuild
+        buildFileList("", fileTree->GetRootItem());
+    }
 }
 
 void MainFrame::buildFileList(std::filesystem::path path, wxTreeListItem parent)

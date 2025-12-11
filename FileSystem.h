@@ -45,6 +45,7 @@ public:
     std::vector<FileEntry> listFiles(std::string_view path);
 
     void mount(std::shared_ptr<FileSystemMount> mount, std::string mountPath);
+    void unmountAll();
 
 private:
     std::tuple<std::shared_ptr<FileSystemMount>, std::string_view> findMount(std::string_view path);
