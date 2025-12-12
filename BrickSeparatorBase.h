@@ -24,6 +24,7 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/frame.h>
+#include <wx/textctrl.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -51,6 +52,24 @@ class MainFrameBase : public wxFrame
 		MainFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Brick Separator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~MainFrameBase();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class TextInfoPanelBase
+///////////////////////////////////////////////////////////////////////////////
+class TextInfoPanelBase : public wxPanel
+{
+	private:
+
+	protected:
+		wxTextCtrl* textCtrl;
+
+	public:
+
+		TextInfoPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+		~TextInfoPanelBase();
 
 };
 

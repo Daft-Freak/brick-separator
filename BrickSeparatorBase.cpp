@@ -52,7 +52,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	defaultInfoPanel->SetSizer( bSizer2 );
 	defaultInfoPanel->Layout();
 	bSizer2->Fit( defaultInfoPanel );
-	bSizer1->Add( defaultInfoPanel, 1, wxEXPAND | wxALL, 5 );
+	bSizer1->Add( defaultInfoPanel, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bSizer1 );
@@ -66,5 +66,22 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 }
 
 MainFrameBase::~MainFrameBase()
+{
+}
+
+TextInfoPanelBase::TextInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer3;
+	bSizer3 = new wxBoxSizer( wxVERTICAL );
+
+	textCtrl = new wxTextCtrl( this, wxID_ANY, _("this\nis\nsome\ntext"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY );
+	bSizer3->Add( textCtrl, 1, wxALL|wxEXPAND, 5 );
+
+
+	this->SetSizer( bSizer3 );
+	this->Layout();
+}
+
+TextInfoPanelBase::~TextInfoPanelBase()
 {
 }

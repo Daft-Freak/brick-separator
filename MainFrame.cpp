@@ -3,7 +3,9 @@
 #include <wx/dirdlg.h>
 
 #include "MainFrame.h"
+
 #include "FileSystem.h"
+#include "InfoPanel.h"
 
 class FileListComparator final : public wxTreeListItemComparator
 {
@@ -37,6 +39,8 @@ MainFrame::MainFrame() : MainFrameBase(nullptr)
     fileTree->SetSortColumn(0);
 
     buildFileList("", fileTree->GetRootItem());
+
+    curInfoPanel = defaultInfoPanel;
 }
 
 void MainFrame::onOpenFolder(wxCommandEvent &event)
@@ -71,17 +75,59 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
         parent = fileTree->GetItemParent(parent);
     }
 
-    // update info panel
-    wxString label;
-    auto size = fileTree->GetItemText(item, 2);
-    
-    // empty size text is a dir
-    if(size.empty())
-        label = wxString::Format("%s\nfolder", path, size);
-    else
-        label = wxString::Format("%s\n%s byte file", path, size);
+    auto type = identifyFile(path.ToStdString());
 
-    infoLabel->SetLabel(label);
+    wxPanel *newInfoPanel = nullptr;
+
+    // update info panel
+    switch(type)
+    {
+        case FileType::Text:
+        {
+            auto textPanel = new TextInfoPanel(this);
+            newInfoPanel = textPanel;
+
+            auto contents = fs.getFileContents(path.ToStdString());
+
+            if(contents)
+            {
+                wxString contentsStr(contents->data(), contents->size());
+                textPanel->setText(contentsStr);
+            }
+            else
+                textPanel->setText("Failed to read...");
+            break;
+        }
+
+        case FileType::Unknown:
+        default:
+        {
+            // fallback panel with not so helpful generic info
+            newInfoPanel = defaultInfoPanel;
+
+            wxString label;
+            auto size = fileTree->GetItemText(item, 2);
+            
+            // empty size text is a dir
+            if(size.empty())
+                label = wxString::Format("%s\nfolder", path, size);
+            else
+                label = wxString::Format("%s\n%s byte file", path, size);
+
+            infoLabel->SetLabel(label);
+        }
+    }
+
+    // switch panels
+    GetSizer()->Replace(curInfoPanel, newInfoPanel);
+
+    // clean up non-default panel
+    if(curInfoPanel != defaultInfoPanel)
+        delete curInfoPanel;
+
+    curInfoPanel = newInfoPanel;
+
+    Layout();
 }
 
 void MainFrame::buildFileList(std::filesystem::path path, wxTreeListItem parent)
@@ -104,4 +150,17 @@ void MainFrame::buildFileList(std::filesystem::path path, wxTreeListItem parent)
         if(file.isDir)
             buildFileList(itemPath, newItem);
     }
+}
+
+MainFrame::FileType MainFrame::identifyFile(std::string path)
+{
+    // get extension
+    auto ext = std::filesystem::path(path).extension().string();
+    // lowercase
+    std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+
+    if(ext == ".txt")
+        return FileType::Text;
+
+    return FileType::Unknown;
 }
