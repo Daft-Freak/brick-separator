@@ -10,7 +10,8 @@ public:
 
 private:
     // events
-    void onOpenFolder(wxCommandEvent& event) override;
+    void onOpenFolder(wxCommandEvent &event) override;
+    void onFileSelectionChanged(wxTreeListEvent &event) override;
 
     void buildFileList(std::filesystem::path path, wxTreeListItem parent);
 

@@ -39,7 +39,7 @@ MainFrame::MainFrame() : MainFrameBase(nullptr)
     buildFileList("", fileTree->GetRootItem());
 }
 
-void MainFrame::onOpenFolder(wxCommandEvent& event)
+void MainFrame::onOpenFolder(wxCommandEvent &event)
 {
     wxDirDialog dirDialog(this, "Choose folder", "", wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
 
@@ -57,6 +57,33 @@ void MainFrame::onOpenFolder(wxCommandEvent& event)
     }
 }
 
+void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
+{
+    // build path from tree
+    auto item = event.GetItem();
+
+    auto path = fileTree->GetItemText(item);
+
+    auto parent = fileTree->GetItemParent(item);
+    while(parent != fileTree->GetRootItem())
+    {
+        path = fileTree->GetItemText(parent) + "/" + path;
+        parent = fileTree->GetItemParent(parent);
+    }
+
+    // update info panel
+    wxString label;
+    auto size = fileTree->GetItemText(item, 2);
+    
+    // empty size text is a dir
+    if(size.empty())
+        label = wxString::Format("%s\nfolder", path, size);
+    else
+        label = wxString::Format("%s\n%s byte file", path, size);
+
+    infoLabel->SetLabel(label);
+}
+
 void MainFrame::buildFileList(std::filesystem::path path, wxTreeListItem parent)
 {
     auto files = fs.listFiles(path.generic_string() + "/");
@@ -70,7 +97,7 @@ void MainFrame::buildFileList(std::filesystem::path path, wxTreeListItem parent)
         if(itemPath.has_extension())
             fileTree->SetItemText(newItem, 1, itemPath.extension().c_str() + 1);
 
-        if(file.size)
+        if(!file.isDir)
             fileTree->SetItemText(newItem, 2, std::to_string(file.size));
 
         // recurse

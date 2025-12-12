@@ -40,8 +40,19 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 
 	bSizer1->Add( fileTree, 0, wxEXPAND | wxALL, 5 );
 
-	m_panel1 = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	bSizer1->Add( m_panel1, 1, wxEXPAND | wxALL, 5 );
+	defaultInfoPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer2;
+	bSizer2 = new wxBoxSizer( wxVERTICAL );
+
+	infoLabel = new wxStaticText( defaultInfoPanel, wxID_ANY, _("Nothing to see, files are to the left."), wxDefaultPosition, wxDefaultSize, 0 );
+	infoLabel->Wrap( -1 );
+	bSizer2->Add( infoLabel, 0, wxALL, 5 );
+
+
+	defaultInfoPanel->SetSizer( bSizer2 );
+	defaultInfoPanel->Layout();
+	bSizer2->Fit( defaultInfoPanel );
+	bSizer1->Add( defaultInfoPanel, 1, wxEXPAND | wxALL, 5 );
 
 
 	this->SetSizer( bSizer1 );
@@ -51,6 +62,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 
 	// Connect Events
 	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onOpenFolder ), this, openFolderItem->GetId());
+	fileTree->Connect( wxEVT_TREELIST_SELECTION_CHANGED, wxTreeListEventHandler( MainFrameBase::onFileSelectionChanged ), NULL, this );
 }
 
 MainFrameBase::~MainFrameBase()

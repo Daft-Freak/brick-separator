@@ -20,8 +20,9 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/treelist.h>
-#include <wx/panel.h>
+#include <wx/stattext.h>
 #include <wx/sizer.h>
+#include <wx/panel.h>
 #include <wx/frame.h>
 
 ///////////////////////////////////////////////////////////////////////////
@@ -37,10 +38,12 @@ class MainFrameBase : public wxFrame
 		wxMenuBar* mainMenuBar;
 		wxMenu* fileMenu;
 		wxTreeListCtrl* fileTree;
-		wxPanel* m_panel1;
+		wxPanel* defaultInfoPanel;
+		wxStaticText* infoLabel;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void onOpenFolder( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onFileSelectionChanged( wxTreeListEvent& event ) { event.Skip(); }
 
 
 	public:
