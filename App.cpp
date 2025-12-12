@@ -12,6 +12,8 @@ wxIMPLEMENT_APP(BrickSeparatorApp);
 
 bool BrickSeparatorApp::OnInit()
 {
+    wxInitAllImageHandlers();
+
     auto frame = new MainFrame();
     frame->Show();
     return true;
