@@ -194,7 +194,7 @@ MainFrame::FileType MainFrame::identifyFile(std::string path)
 
     if(ext == ".txt")
         return FileType::Text;
-    if(ext == ".bmp")
+    if(ext == ".bmp" || ext == ".png")
         return FileType::Image;
 
     return FileType::Unknown;
