@@ -32,11 +32,11 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	bSizer1 = new wxBoxSizer( wxHORIZONTAL );
 
 	fileTree = new wxTreeListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTL_DEFAULT_STYLE );
-	fileTree->SetMinSize( wxSize( 300,-1 ) );
+	fileTree->SetMinSize( wxSize( 500,-1 ) );
 
-	fileTree->AppendColumn( _("Name"), wxCOL_WIDTH_DEFAULT, wxALIGN_LEFT, wxCOL_RESIZABLE|wxCOL_SORTABLE );
+	fileTree->AppendColumn( _("Name"), wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT, wxCOL_RESIZABLE|wxCOL_SORTABLE );
 	fileTree->AppendColumn( _("Type"), wxCOL_WIDTH_DEFAULT, wxALIGN_LEFT, wxCOL_RESIZABLE|wxCOL_SORTABLE );
-	fileTree->AppendColumn( _("Size"), wxCOL_WIDTH_DEFAULT, wxALIGN_LEFT, wxCOL_RESIZABLE|wxCOL_SORTABLE );
+	fileTree->AppendColumn( _("Size"), wxCOL_WIDTH_DEFAULT, wxALIGN_RIGHT, wxCOL_RESIZABLE|wxCOL_SORTABLE );
 
 	bSizer1->Add( fileTree, 0, wxEXPAND | wxALL, 5 );
 

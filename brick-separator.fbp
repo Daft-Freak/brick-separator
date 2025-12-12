@@ -50,7 +50,7 @@
       <property name="minimum_size"></property>
       <property name="name">MainFrameBase</property>
       <property name="pos"></property>
-      <property name="size">500,300</property>
+      <property name="size">1000,700</property>
       <property name="style">wxDEFAULT_FRAME_STYLE</property>
       <property name="subclass">; ; forward_declare</property>
       <property name="title">Brick Separator</property>
@@ -145,7 +145,7 @@
             <property name="maximum_size"></property>
             <property name="min_size"></property>
             <property name="minimize_button">0</property>
-            <property name="minimum_size">300,-1</property>
+            <property name="minimum_size">500,-1</property>
             <property name="moveable">1</property>
             <property name="name">fileTree</property>
             <property name="pane_border">1</property>
@@ -169,7 +169,7 @@
               <property name="alignment">wxALIGN_LEFT</property>
               <property name="flag">wxCOL_RESIZABLE|wxCOL_SORTABLE</property>
               <property name="name">Name</property>
-              <property name="width">wxCOL_WIDTH_DEFAULT</property>
+              <property name="width">wxCOL_WIDTH_AUTOSIZE</property>
             </object>
             <object class="wxTreeListCtrlColumn" expanded="true">
               <property name="alignment">wxALIGN_LEFT</property>
@@ -178,7 +178,7 @@
               <property name="width">wxCOL_WIDTH_DEFAULT</property>
             </object>
             <object class="wxTreeListCtrlColumn" expanded="true">
-              <property name="alignment">wxALIGN_LEFT</property>
+              <property name="alignment">wxALIGN_RIGHT</property>
               <property name="flag">wxCOL_RESIZABLE|wxCOL_SORTABLE</property>
               <property name="name">Size</property>
               <property name="width">wxCOL_WIDTH_DEFAULT</property>
