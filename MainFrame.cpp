@@ -139,12 +139,22 @@ void MainFrame::buildFileList(std::filesystem::path path, wxTreeListItem parent)
         auto itemPath = path / file.name;
         auto newItem = fileTree->AppendItem(parent, file.name);
 
-        // "type" column (not too useful yet)
-        if(itemPath.has_extension())
-            fileTree->SetItemText(newItem, 1, itemPath.extension().c_str() + 1);
+        // default type (updated below if not a dir)
+        auto type = FileType::Directory;
 
+        // show size and try to identify type if not a dir
         if(!file.isDir)
+        {
+            type = identifyFile(itemPath);
             fileTree->SetItemText(newItem, 2, std::to_string(file.size));
+        }
+
+        // type column
+        // display ext if not known
+        if(type == FileType::Unknown)
+            fileTree->SetItemText(newItem, 1, itemPath.extension().c_str() + 1);
+        else
+            fileTree->SetItemText(newItem, 1, getFileTypeLabel(type));
 
         // recurse
         if(file.isDir)
@@ -163,4 +173,16 @@ MainFrame::FileType MainFrame::identifyFile(std::string path)
         return FileType::Text;
 
     return FileType::Unknown;
+}
+
+std::string MainFrame::getFileTypeLabel(FileType type)
+{
+    switch(type)
+    {
+        case FileType::Text:
+            return "text";
+
+        default:
+            return "";
+    }
 }

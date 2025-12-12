@@ -11,8 +11,9 @@ public:
 private:
     enum class FileType
     {
-        Unknown = -1,
-        Text    =  0,
+        Unknown   = -1,
+        Directory =  0,
+        Text,
     };
 
     // events
@@ -20,7 +21,9 @@ private:
     void onFileSelectionChanged(wxTreeListEvent &event) override;
 
     void buildFileList(std::filesystem::path path, wxTreeListItem parent);
+
     FileType identifyFile(std::string path);
+    std::string getFileTypeLabel(FileType type);
 
     FileSystem fs;
 
