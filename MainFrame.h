@@ -12,8 +12,10 @@ private:
     enum class FileType
     {
         Unknown   = -1,
+        // generic types
         Directory =  0,
         Text,
+        Image,
     };
 
     // events

@@ -25,6 +25,7 @@
 #include <wx/panel.h>
 #include <wx/frame.h>
 #include <wx/textctrl.h>
+#include <wx/statbmp.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -70,6 +71,25 @@ class TextInfoPanelBase : public wxPanel
 		TextInfoPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 		~TextInfoPanelBase();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class ImageInfoPanelBase
+///////////////////////////////////////////////////////////////////////////////
+class ImageInfoPanelBase : public wxPanel
+{
+	private:
+
+	protected:
+		wxStaticBitmap* bitmap;
+		wxStaticText* imageInfoLabel;
+
+	public:
+
+		ImageInfoPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+		~ImageInfoPanelBase();
 
 };
 

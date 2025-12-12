@@ -85,3 +85,24 @@ TextInfoPanelBase::TextInfoPanelBase( wxWindow* parent, wxWindowID id, const wxP
 TextInfoPanelBase::~TextInfoPanelBase()
 {
 }
+
+ImageInfoPanelBase::ImageInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer3;
+	bSizer3 = new wxBoxSizer( wxVERTICAL );
+
+	bitmap = new wxStaticBitmap( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer3->Add( bitmap, 0, wxALL, 5 );
+
+	imageInfoLabel = new wxStaticText( this, wxID_ANY, _("An amazing image!"), wxDefaultPosition, wxDefaultSize, 0 );
+	imageInfoLabel->Wrap( -1 );
+	bSizer3->Add( imageInfoLabel, 0, wxALL, 5 );
+
+
+	this->SetSizer( bSizer3 );
+	this->Layout();
+}
+
+ImageInfoPanelBase::~ImageInfoPanelBase()
+{
+}

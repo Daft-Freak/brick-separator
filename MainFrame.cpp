@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include <wx/dirdlg.h>
+#include <wx/mstream.h>
 
 #include "MainFrame.h"
 
@@ -99,6 +100,25 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             break;
         }
 
+        case FileType::Image:
+        {
+            auto imagePanel = new ImageInfoPanel(this);
+            newInfoPanel = imagePanel;
+
+            auto contents = fs.getFileContents(path.ToStdString());
+            wxImage image;
+
+            if(contents)
+            {
+                wxMemoryInputStream stream(contents->data(), contents->size());
+                image.LoadFile(stream);
+            }
+
+            imagePanel->setImage(image);
+
+            break;
+        }
+
         case FileType::Unknown:
         default:
         {
@@ -174,6 +194,8 @@ MainFrame::FileType MainFrame::identifyFile(std::string path)
 
     if(ext == ".txt")
         return FileType::Text;
+    if(ext == ".bmp")
+        return FileType::Image;
 
     return FileType::Unknown;
 }
@@ -184,6 +206,9 @@ std::string MainFrame::getFileTypeLabel(FileType type)
     {
         case FileType::Text:
             return "text";
+
+        case FileType::Image:
+            return "image";
 
         default:
             return "";
