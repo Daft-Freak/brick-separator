@@ -104,6 +104,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
         {
             // fallback panel with not so helpful generic info
             newInfoPanel = defaultInfoPanel;
+            defaultInfoPanel->Show();
 
             wxString label;
             auto size = fileTree->GetItemText(item, 2);
@@ -124,6 +125,8 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
     // clean up non-default panel
     if(curInfoPanel != defaultInfoPanel)
         delete curInfoPanel;
+    else if(newInfoPanel != curInfoPanel)
+        curInfoPanel->Hide();
 
     curInfoPanel = newInfoPanel;
 
