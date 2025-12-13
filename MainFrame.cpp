@@ -8,6 +8,7 @@
 #include "FileSystem.h"
 #include "InfoPanel.h"
 #include "LLSInfoPanel.h"
+#include "RESMount.h"
 
 class FileListComparator final : public wxTreeListItemComparator
 {
@@ -120,6 +121,31 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             break;
         }
 
+        case FileType::LLResource:
+        {
+            // display file list
+            auto textPanel = new TextInfoPanel(this);
+            newInfoPanel = textPanel;
+
+            RESFile resFile;
+            if(resFile.load(fs.getRealPath(path.ToStdString())))
+            {
+                wxString text;
+                auto entries = resFile.getEntries();
+                for(auto &ent : entries)
+                {
+                    // insert a blank line on dir change
+                    if(!text.empty() && ent.first.back() == '/')
+                        text << "\n";
+                    text << ent.first << " offset " << ent.second.offset << " size " << ent.second.size << "\n";
+                }
+                textPanel->setText(text);
+            }
+            else
+                textPanel->setText("Failed to read...");
+            break;
+        }
+
         case FileType::LLSprite:
         {
             auto spritePanel = new LLSInfoPanel(this);
@@ -214,6 +240,8 @@ MainFrame::FileType MainFrame::identifyFile(std::string path)
     if(ext == ".bmp" || ext == ".png")
         return FileType::Image;
 
+    if(ext == ".res") // TODO: chess has a similar format?
+        return FileType::LLResource;
     if(ext == ".lls")
         return FileType::LLSprite;
 
@@ -226,10 +254,11 @@ std::string MainFrame::getFileTypeLabel(FileType type)
     {
         case FileType::Text:
             return "text";
-
         case FileType::Image:
             return "image";
 
+        case FileType::LLResource:
+            return "LL resource";
         case FileType::LLSprite:
             return "LL sprite";
 
