@@ -164,6 +164,7 @@
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
             <property name="window_style"></property>
+            <event name="OnTreelistItemActivated">onFileActivated</event>
             <event name="OnTreelistSelectionChanged">onFileSelectionChanged</event>
             <object class="wxTreeListCtrlColumn" expanded="true">
               <property name="alignment">wxALIGN_LEFT</property>

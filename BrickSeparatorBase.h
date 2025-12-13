@@ -48,6 +48,7 @@ class MainFrameBase : public wxFrame
 
 		// Virtual event handlers, override them in your derived class
 		virtual void onOpenFolder( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onFileActivated( wxTreeListEvent& event ) { event.Skip(); }
 		virtual void onFileSelectionChanged( wxTreeListEvent& event ) { event.Skip(); }
 
 

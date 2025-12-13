@@ -62,6 +62,7 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 
 	// Connect Events
 	fileMenu->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrameBase::onOpenFolder ), this, openFolderItem->GetId());
+	fileTree->Connect( wxEVT_TREELIST_ITEM_ACTIVATED, wxTreeListEventHandler( MainFrameBase::onFileActivated ), NULL, this );
 	fileTree->Connect( wxEVT_TREELIST_SELECTION_CHANGED, wxTreeListEventHandler( MainFrameBase::onFileSelectionChanged ), NULL, this );
 }
 
