@@ -33,6 +33,10 @@ std::vector<FileEntry> DirectoryMount::listFiles(std::string_view path)
     // avoid accidentally using the true fs root
     auto fullPath = path == "/" ? basePath : basePath / path;
 
+    // might get passed a package file
+    if(!std::filesystem::is_directory(fullPath))
+        return {};
+
     std::vector<FileEntry> ret;
 
     for(auto &entry : std::filesystem::directory_iterator(fullPath))
