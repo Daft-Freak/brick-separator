@@ -18,7 +18,7 @@ class FileListComparator final : public wxTreeListItemComparator
 
         // if not the size column, do a string compare
         if(column != 2)
-            return firstText.compare(secondText);
+            return firstText.CmpNoCase(secondText);
 
         long firstV = 0, secondV = 0;
 
