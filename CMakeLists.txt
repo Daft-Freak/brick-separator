@@ -10,6 +10,7 @@ add_executable(BrickSeparator
     FileSystem.cpp
     InfoPanel.cpp
     LLSFile.cpp
+    LLSInfoPanel.cpp
     MainFrame.cpp
 )
 

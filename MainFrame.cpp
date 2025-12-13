@@ -7,6 +7,7 @@
 
 #include "FileSystem.h"
 #include "InfoPanel.h"
+#include "LLSInfoPanel.h"
 
 class FileListComparator final : public wxTreeListItemComparator
 {
@@ -119,6 +120,22 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             break;
         }
 
+        case FileType::LLSprite:
+        {
+            auto spritePanel = new LLSInfoPanel(this);
+            newInfoPanel = spritePanel;
+
+            auto contents = fs.getFileContents(path.ToStdString());
+            wxImage image;
+
+            if(contents)
+                spritePanel->loadSprite(contents->data(), contents->size());
+            else
+                spritePanel->loadSprite(nullptr, 0);
+
+            break;
+        }
+
         case FileType::Unknown:
         default:
         {
@@ -197,6 +214,9 @@ MainFrame::FileType MainFrame::identifyFile(std::string path)
     if(ext == ".bmp" || ext == ".png")
         return FileType::Image;
 
+    if(ext == ".lls")
+        return FileType::LLSprite;
+
     return FileType::Unknown;
 }
 
@@ -209,6 +229,9 @@ std::string MainFrame::getFileTypeLabel(FileType type)
 
         case FileType::Image:
             return "image";
+
+        case FileType::LLSprite:
+            return "LL sprite";
 
         default:
             return "";

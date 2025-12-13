@@ -16,6 +16,9 @@ private:
         Directory =  0,
         Text,
         Image,
+
+        // legoland
+        LLSprite,
     };
 
     // events

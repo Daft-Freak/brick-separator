@@ -106,3 +106,62 @@ ImageInfoPanelBase::ImageInfoPanelBase( wxWindow* parent, wxWindowID id, const w
 ImageInfoPanelBase::~ImageInfoPanelBase()
 {
 }
+
+LLSInfoPanelBase::LLSInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer3;
+	bSizer3 = new wxBoxSizer( wxVERTICAL );
+
+	spritePanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 10,10 ), wxTAB_TRAVERSAL );
+	bSizer3->Add( spritePanel, 0, wxALL, 5 );
+
+	wxBoxSizer* bSizer8;
+	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
+
+	animationToggle = new wxToggleButton( this, wxID_ANY, _("Pause"), wxDefaultPosition, wxDefaultSize, 0 );
+	animationToggle->SetValue( true );
+	bSizer8->Add( animationToggle, 0, wxALL, 5 );
+
+	animationSlider = new wxSlider( this, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
+	animationSlider->Enable( false );
+
+	bSizer8->Add( animationSlider, 1, wxALIGN_CENTER|wxALL, 5 );
+
+	frameNumLabel = new wxStaticText( this, wxID_ANY, _("999/999"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	frameNumLabel->Wrap( -1 );
+	frameNumLabel->SetMinSize( wxSize( 60,-1 ) );
+
+	bSizer8->Add( frameNumLabel, 0, wxALIGN_CENTER|wxALL, 5 );
+
+
+	bSizer3->Add( bSizer8, 0, wxEXPAND, 5 );
+
+	imageInfoLabel = new wxStaticText( this, wxID_ANY, _("An amazing sprite!"), wxDefaultPosition, wxDefaultSize, 0 );
+	imageInfoLabel->Wrap( -1 );
+	bSizer3->Add( imageInfoLabel, 0, wxALL, 5 );
+
+
+	this->SetSizer( bSizer3 );
+	this->Layout();
+	animationTimer.SetOwner( this, animationTimer.GetId() );
+	animationTimer.Start( 33 );
+
+
+	// Connect Events
+	spritePanel->Connect( wxEVT_PAINT, wxPaintEventHandler( LLSInfoPanelBase::onSpritePaint ), NULL, this );
+	animationToggle->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( LLSInfoPanelBase::onAnimationPlayToggle ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( LLSInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( LLSInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( LLSInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( LLSInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( LLSInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( LLSInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( LLSInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( LLSInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( LLSInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	this->Connect( animationTimer.GetId(), wxEVT_TIMER, wxTimerEventHandler( LLSInfoPanelBase::onAnimationTimer ) );
+}
+
+LLSInfoPanelBase::~LLSInfoPanelBase()
+{
+}
