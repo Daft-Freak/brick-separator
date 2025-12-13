@@ -46,6 +46,11 @@ std::vector<FileEntry> DirectoryMount::listFiles(std::string_view path)
     return ret;
 }
 
+std::string DirectoryMount::getRealPath(std::string_view path)
+{
+    return (basePath / path).string();
+}
+
 std::optional<std::vector<uint8_t>> FileSystem::getFileContents(std::string_view path)
 {
     auto [mount, relPath] = findMount(path);
@@ -62,6 +67,15 @@ std::vector<FileEntry> FileSystem::listFiles(std::string_view path)
         return {};
 
     return mount->listFiles(relPath);
+}
+
+std::string FileSystem::getRealPath(std::string_view path)
+{
+    auto [mount, relPath] = findMount(path);
+    if(!mount)
+        return {};
+
+    return mount->getRealPath(relPath);
 }
 
 void FileSystem::mount(std::shared_ptr<FileSystemMount> mount, std::string mountPath)

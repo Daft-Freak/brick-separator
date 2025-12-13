@@ -22,6 +22,7 @@ class FileSystemMount
 public:
     virtual std::optional<std::vector<uint8_t>> getFileContents(std::string_view path) = 0;
     virtual std::vector<FileEntry> listFiles(std::string_view path) = 0;
+    virtual std::string getRealPath(std::string_view path) = 0;
 };
 
 // mounts a directory to the filesystem
@@ -32,6 +33,7 @@ public:
 
     std::optional<std::vector<uint8_t>> getFileContents(std::string_view path) override;
     std::vector<FileEntry> listFiles(std::string_view path) override;
+    std::string getRealPath(std::string_view path) override;
 
 private:
     std::filesystem::path basePath;
@@ -43,6 +45,9 @@ class FileSystem
 public:
     std::optional<std::vector<uint8_t>> getFileContents(std::string_view path);
     std::vector<FileEntry> listFiles(std::string_view path);
+
+    // returns empty string if there is not a real file (it's embedded in a package of some kind)
+    std::string getRealPath(std::string_view path);
 
     void mount(std::shared_ptr<FileSystemMount> mount, std::string mountPath);
     void unmountAll();
