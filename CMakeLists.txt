@@ -13,6 +13,7 @@ add_executable(BrickSeparator
     LLSInfoPanel.cpp
     MainFrame.cpp
     RESFile.cpp
+    RESMount.cpp
 )
 
 find_package(wxWidgets)
