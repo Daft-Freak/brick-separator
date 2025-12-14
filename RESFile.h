@@ -27,4 +27,7 @@ private:
     std::string path;
 
     std::map<std::string, Entry, std::less<>> entries;
+
+    // maps lower case to original for case-insensitive lookups
+    std::map<std::string, std::string> lowercaseNames;
 };

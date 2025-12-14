@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 
 #include "RESFile.h"
@@ -37,7 +38,18 @@ std::optional<std::vector<uint8_t>> RESFile::getFileContents(std::string_view pa
     auto it = entries.find(path);
 
     if(it == entries.end())
-        return {};
+    {
+        // retry with lower case name
+        auto lcPath = std::string(path);
+        std::transform(lcPath.begin(), lcPath.end(), lcPath.begin(), ::tolower);
+
+        auto lcIt = lowercaseNames.find(lcPath);
+        if(lcIt == lowercaseNames.end())
+            return {};
+
+        // shouldn't fail if there was a mapping entry
+        it = entries.find(lcIt->second);
+    }
 
     // open file
     std::ifstream file(this->path, std::ios::binary);
@@ -89,6 +101,12 @@ void RESFile::parseEntries(std::ifstream &file, uint32_t rootOffset, uint32_t of
             entries.emplace(path, Entry{0, 0});
             parseEntries(file, rootOffset, entry.firstChildOffset, path);
         }
+
+        // create mapping for case-insensitive lookup
+        auto lcPath = path;
+        std::transform(lcPath.begin(), lcPath.end(), lcPath.begin(), ::tolower);
+        if(lcPath != path)
+            lowercaseNames.emplace(lcPath, path);
 
         // no more entries
         if(entry.nextEntryOffset == 0xFFFFFFFF)
