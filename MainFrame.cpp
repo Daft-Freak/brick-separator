@@ -6,6 +6,7 @@
 #include "MainFrame.h"
 
 #include "FileSystem.h"
+#include "CSPInfoPanel.h"
 #include "InfoPanel.h"
 #include "LLSInfoPanel.h"
 #include "RESMount.h"
@@ -110,6 +111,21 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             }
 
             imagePanel->setImage(image);
+
+            break;
+        }
+
+        case FileType::LLCompSprite:
+        {
+            auto cspPanel = new CSPInfoPanel(this, fs);
+            newInfoPanel = cspPanel;
+
+            auto contents = fs.getFileContents(path.ToStdString());
+
+            if(contents)
+                cspPanel->loadFile(contents->data(), contents->size());
+            else
+                cspPanel->loadFile(nullptr, 0);
 
             break;
         }
@@ -269,6 +285,9 @@ MainFrame::FileType MainFrame::identifyFile(std::string path)
     if(ext == ".bmp" || ext == ".png")
         return FileType::Image;
 
+    // these seem to be the same format, but with different uses
+    if(ext == ".csp" || ext == ".ilf" || ext == ".tsf")
+        return FileType::LLCompSprite;
     if(ext == ".res") // TODO: chess has a similar format?
         return FileType::LLResource;
     if(ext == ".lls")
@@ -286,6 +305,8 @@ std::string MainFrame::getFileTypeLabel(FileType type)
         case FileType::Image:
             return "image";
 
+        case FileType::LLCompSprite:
+            return "LL composite sprite";
         case FileType::LLResource:
             return "LL resource";
         case FileType::LLSprite:

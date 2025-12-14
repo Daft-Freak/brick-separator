@@ -29,6 +29,7 @@
 #include <wx/tglbtn.h>
 #include <wx/slider.h>
 #include <wx/timer.h>
+#include <wx/listbox.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -124,6 +125,34 @@ class LLSInfoPanelBase : public wxPanel
 		LLSInfoPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 		~LLSInfoPanelBase();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class CSPInfoPanelBase
+///////////////////////////////////////////////////////////////////////////////
+class CSPInfoPanelBase : public wxPanel
+{
+	private:
+
+	protected:
+		wxPanel* spritePanel;
+		wxListBox* spriteList;
+		wxToggleButton* animationToggle;
+		wxStaticText* imageInfoLabel;
+		wxTimer animationTimer;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void onSpritePaint( wxPaintEvent& event ) { event.Skip(); }
+		virtual void onAnimationPlayToggle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onAnimationTimer( wxTimerEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		CSPInfoPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+		~CSPInfoPanelBase();
 
 };
 
