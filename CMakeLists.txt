@@ -14,6 +14,7 @@ add_executable(BrickSeparator
     LLSFile.cpp
     LLSInfoPanel.cpp
     MainFrame.cpp
+    Model3DFile.cpp
     RESFile.cpp
     RESMount.cpp
 )
