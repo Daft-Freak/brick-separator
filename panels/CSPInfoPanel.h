@@ -2,8 +2,8 @@
 
 #include "BrickSeparatorBase.h"
 
-#include "CSPFile.h"
-#include "LLSFile.h"
+#include "formats/CSPFile.h"
+#include "formats/LLSFile.h"
 
 class FileSystem;
 

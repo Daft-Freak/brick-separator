@@ -1,6 +1,7 @@
 #pragma once
 #include "FileSystem.h"
-#include "RESFile.h"
+
+#include "formats/RESFile.h"
 
 class RESMount final : public FileSystemMount
 {

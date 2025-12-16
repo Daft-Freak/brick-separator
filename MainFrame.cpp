@@ -5,12 +5,13 @@
 
 #include "MainFrame.h"
 
-#include "FileSystem.h"
-#include "CSPInfoPanel.h"
-#include "InfoPanel.h"
-#include "LLSInfoPanel.h"
-#include "Model3DInfoPanel.h"
-#include "RESMount.h"
+#include "filesystem/FileSystem.h"
+#include "filesystem/RESMount.h"
+
+#include "panels/CSPInfoPanel.h"
+#include "panels/InfoPanel.h"
+#include "panels/LLSInfoPanel.h"
+#include "panels/Model3DInfoPanel.h"
 
 class FileListComparator final : public wxTreeListItemComparator
 {

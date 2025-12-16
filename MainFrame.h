@@ -1,7 +1,8 @@
 #pragma once
 
 #include "BrickSeparatorBase.h"
-#include "FileSystem.h"
+
+#include "filesystem/FileSystem.h"
 
 class MainFrame final : public MainFrameBase
 {

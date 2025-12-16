@@ -2,7 +2,8 @@
 #include <memory>
 
 #include "BrickSeparatorBase.h"
-#include "Model3DFile.h"
+
+#include "formats/Model3DFile.h"
 
 class FileSystem;
 

@@ -2,7 +2,7 @@
 
 #include "BrickSeparatorBase.h"
 
-#include "LLSFile.h"
+#include "formats/LLSFile.h"
 
 class LLSInfoPanel final : public LLSInfoPanelBase
 {

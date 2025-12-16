@@ -4,7 +4,7 @@
 
 #include "Model3DInfoPanel.h"
 
-#include "FileSystem.h"
+#include "filesystem/FileSystem.h"
 
 // little helper so I don't have to use GLU (or my entire 3D engine...)
 static void setPerspective(double fovY, double aspect, double zNear, double zFar)

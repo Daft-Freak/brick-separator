@@ -5,7 +5,7 @@
 
 #include "CSPInfoPanel.h"
 
-#include "FileSystem.h"
+#include "filesystem/FileSystem.h"
 
 CSPInfoPanel::CSPInfoPanel(wxWindow *parent, FileSystem &fs) : CSPInfoPanelBase(parent), fs(fs)
 {
