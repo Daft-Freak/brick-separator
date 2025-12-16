@@ -33,3 +33,14 @@ target_link_libraries(BrickSeparator PRIVATE wxWidgets::wxWidgets OpenGL::GL)
 set_property(TARGET BrickSeparator PROPERTY VS_DPI_AWARE "PerMonitor")
 
 install(TARGETS BrickSeparator)
+
+if(WIN32)
+    # install library dependencies
+    install(TARGETS BrickSeparator
+        RUNTIME_DEPENDENCIES
+            DIRECTORIES ${wxWidgets_LIB_DIR}
+            # exclude system files
+            PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-" "vcruntime"
+            POST_EXCLUDE_REGEXES ".*system32/.*\\.dll"
+    )
+endif()
