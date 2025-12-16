@@ -79,7 +79,7 @@ jobs:
         curl -OL https://github.com/wxWidgets/wxWidgets/releases/download/v${{ steps.strings.outputs.wx-ver }}/wxMSW-${{ steps.strings.outputs.wx-ver }}_vc14x_x64_ReleaseDLL.7z
         7z x wxWidgets-${{ steps.strings.outputs.wx-ver }}-headers.7z
         7z x wxMSW-${{ steps.strings.outputs.wx-ver }}_vc14x_x64_Dev.7z
-        7z x wxMSW-${{ steps.strings.outputs.wx-ver }}_vc14x_x64_ReleaseDLL.7z
+        7z x wxMSW-${{ steps.strings.outputs.wx-ver }}_vc14x_x64_ReleaseDLL.7z -aoa
 
     - name: Configure CMake
       # the FindwxWidgets docs imply that wxWidgets_ROOT_DIR is only used on windows
