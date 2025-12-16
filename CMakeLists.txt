@@ -28,3 +28,5 @@ target_include_directories(BrickSeparator PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 find_package(wxWidgets REQUIRED COMPONENTS core gl)
 find_package(OpenGL REQUIRED)
 target_link_libraries(BrickSeparator PRIVATE wxWidgets::wxWidgets OpenGL)
+
+install(TARGETS BrickSeparator)
