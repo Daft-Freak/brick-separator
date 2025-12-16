@@ -42,7 +42,7 @@ std::vector<FileEntry> DirectoryMount::listFiles(std::string_view path)
     for(auto &entry : std::filesystem::directory_iterator(fullPath))
     {
         FileEntry retEntry;
-        retEntry.name = entry.path().filename();
+        retEntry.name = entry.path().filename().string();
         retEntry.size = entry.is_directory() ? 0 : entry.file_size();
         retEntry.isDir = entry.is_directory();
         ret.emplace_back(retEntry);

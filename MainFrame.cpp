@@ -259,7 +259,7 @@ void MainFrame::buildFileList(std::filesystem::path path, wxTreeListItem parent)
         // show size and try to identify type if not a dir
         if(!file.isDir)
         {
-            type = identifyFile(itemPath);
+            type = identifyFile(itemPath.generic_string());
             fileTree->SetItemText(newItem, 2, std::to_string(file.size));
         }
 

@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(BrickSeparator)
 
-add_executable(BrickSeparator
+add_executable(BrickSeparator WIN32
     filesystem/FileSystem.cpp
     filesystem/RESMount.cpp
 
