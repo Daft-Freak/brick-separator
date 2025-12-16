@@ -24,13 +24,13 @@ jobs:
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
         #os: [ubuntu-latest, windows-latest, macos-latest]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
         build_type: [Release]
         c_compiler: [gcc, clang, cl]
         include:
-          #- os: windows-latest
-          #  c_compiler: cl
-          #  cpp_compiler: cl
+          - os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
@@ -63,20 +63,31 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
         echo "build-install-dir=${{ github.workspace }}/build/install" >> "$GITHUB_OUTPUT"
         echo "artifact-name=${{github.event.repository.name}}-${{github.sha}}-${{runner.os}}-${{matrix.c_compiler}}" >> "$GITHUB_OUTPUT"
+        echo "wx-ver=3.2.9" >> "$GITHUB_OUTPUT"
 
     - name: Install wxWidgets
       if: runner.os == 'Linux'
       run: sudo apt update && sudo apt install libwxgtk3.2-dev
 
+    - name: Install wxWidgets
+      if: runner.os == 'Windows'
+      run: |
+        mkdir wx
+        cd wx
+        curl -OL https://github.com/wxWidgets/wxWidgets/releases/download/v${{ steps.strings.outputs.wx-ver }}/wxWidgets-${{ steps.strings.outputs.wx-ver }}-headers.7z
+        curl -OL https://github.com/wxWidgets/wxWidgets/releases/download/v${{ steps.strings.outputs.wx-ver }}/wxMSW-${{ steps.strings.outputs.wx-ver }}_vc14x_x64_Dev.7z
+        7z x wxWidgets-${{ steps.strings.outputs.wx-ver }}-headers.7z
+        7z x wxMSW-${{ steps.strings.outputs.wx-ver }}_vc14x_x64_Dev.7z
+
     - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      # the FindwxWidgets docs imply that wxWidgets_ROOT_DIR is only used on windows
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_INSTALL_PREFIX=${{ steps.strings.outputs.build-install-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DwxWidgets_ROOT_DIR=./wx
         -S ${{ github.workspace }}
 
     - name: Build
