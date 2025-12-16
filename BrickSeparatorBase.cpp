@@ -220,3 +220,64 @@ CSPInfoPanelBase::CSPInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoi
 CSPInfoPanelBase::~CSPInfoPanelBase()
 {
 }
+
+Model3DInfoPanelBase::Model3DInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer3;
+	bSizer3 = new wxBoxSizer( wxVERTICAL );
+
+	wxGLAttributes attribs;
+	attribs.PlatformDefaults().Depth(16).EndList();
+	glCanvas = new wxGLCanvas(this, attribs);
+	bSizer3->Add( glCanvas, 1, wxALL|wxEXPAND, 5 );
+
+	wxBoxSizer* bSizer8;
+	bSizer8 = new wxBoxSizer( wxHORIZONTAL );
+
+	animationToggle = new wxToggleButton( this, wxID_ANY, _("Pause"), wxDefaultPosition, wxDefaultSize, 0 );
+	animationToggle->SetValue( true );
+	bSizer8->Add( animationToggle, 0, wxALL, 5 );
+
+	animationSlider = new wxSlider( this, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
+	animationSlider->Enable( false );
+
+	bSizer8->Add( animationSlider, 1, wxALIGN_CENTER|wxALL, 5 );
+
+	frameNumLabel = new wxStaticText( this, wxID_ANY, _("999/999"), wxDefaultPosition, wxSize( -1,-1 ), 0 );
+	frameNumLabel->Wrap( -1 );
+	frameNumLabel->SetMinSize( wxSize( 60,-1 ) );
+
+	bSizer8->Add( frameNumLabel, 0, wxALIGN_CENTER|wxALL, 5 );
+
+
+	bSizer3->Add( bSizer8, 0, wxEXPAND, 5 );
+
+	infoLabel = new wxStaticText( this, wxID_ANY, _("An amazing model!"), wxDefaultPosition, wxDefaultSize, 0 );
+	infoLabel->Wrap( -1 );
+	bSizer3->Add( infoLabel, 0, wxALL, 5 );
+
+
+	this->SetSizer( bSizer3 );
+	this->Layout();
+	animationTimer.SetOwner( this, animationTimer.GetId() );
+	animationTimer.Start( 33 );
+
+
+	// Connect Events
+	glCanvas->Connect( wxEVT_PAINT, wxPaintEventHandler( Model3DInfoPanelBase::onGLPaint ), NULL, this );
+	animationToggle->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( Model3DInfoPanelBase::onAnimationPlayToggle ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( Model3DInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( Model3DInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( Model3DInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( Model3DInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( Model3DInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( Model3DInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( Model3DInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( Model3DInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	animationSlider->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( Model3DInfoPanelBase::onAnimationSliderScroll ), NULL, this );
+	this->Connect( animationTimer.GetId(), wxEVT_TIMER, wxTimerEventHandler( Model3DInfoPanelBase::onAnimationTimer ) );
+}
+
+Model3DInfoPanelBase::~Model3DInfoPanelBase()
+{
+}

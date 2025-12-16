@@ -18,6 +18,7 @@ private:
         Image,
 
         // legoland
+        LL3D,
         LLCompSprite,
         LLResource,
         LLSprite,

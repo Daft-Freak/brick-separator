@@ -30,6 +30,7 @@
 #include <wx/slider.h>
 #include <wx/timer.h>
 #include <wx/listbox.h>
+#include <wx/glcanvas.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -153,6 +154,36 @@ class CSPInfoPanelBase : public wxPanel
 		CSPInfoPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
 
 		~CSPInfoPanelBase();
+
+};
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class Model3DInfoPanelBase
+///////////////////////////////////////////////////////////////////////////////
+class Model3DInfoPanelBase : public wxPanel
+{
+	private:
+
+	protected:
+		wxGLCanvas* glCanvas;
+		wxToggleButton* animationToggle;
+		wxSlider* animationSlider;
+		wxStaticText* frameNumLabel;
+		wxStaticText* infoLabel;
+		wxTimer animationTimer;
+
+		// Virtual event handlers, override them in your derived class
+		virtual void onGLPaint( wxPaintEvent& event ) { event.Skip(); }
+		virtual void onAnimationPlayToggle( wxCommandEvent& event ) { event.Skip(); }
+		virtual void onAnimationSliderScroll( wxScrollEvent& event ) { event.Skip(); }
+		virtual void onAnimationTimer( wxTimerEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		Model3DInfoPanelBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+		~Model3DInfoPanelBase();
 
 };
 

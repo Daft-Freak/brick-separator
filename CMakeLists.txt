@@ -15,9 +15,11 @@ add_executable(BrickSeparator
     LLSInfoPanel.cpp
     MainFrame.cpp
     Model3DFile.cpp
+    Model3DInfoPanel.cpp
     RESFile.cpp
     RESMount.cpp
 )
 
-find_package(wxWidgets)
-target_link_libraries(BrickSeparator PRIVATE wxWidgets::wxWidgets)
+find_package(wxWidgets REQUIRED COMPONENTS core gl)
+find_package(OpenGL REQUIRED)
+target_link_libraries(BrickSeparator PRIVATE wxWidgets::wxWidgets OpenGL)

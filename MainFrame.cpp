@@ -9,6 +9,7 @@
 #include "CSPInfoPanel.h"
 #include "InfoPanel.h"
 #include "LLSInfoPanel.h"
+#include "Model3DInfoPanel.h"
 #include "RESMount.h"
 
 class FileListComparator final : public wxTreeListItemComparator
@@ -112,6 +113,22 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
 
             imagePanel->setImage(image);
 
+            break;
+        }
+
+        case FileType::LL3D:
+        {
+            auto panel3D = new Model3DInfoPanel(this, fs);
+            newInfoPanel = panel3D;
+
+            auto stdPath = path.ToStdString();
+
+            auto contents = fs.getFileContents(stdPath);
+
+            if(contents)
+                panel3D->loadFile(contents->data(), contents->size(), stdPath);
+            else
+                panel3D->loadFile(nullptr, 0, "");
             break;
         }
 
@@ -285,6 +302,8 @@ MainFrame::FileType MainFrame::identifyFile(std::string path)
     if(ext == ".bmp" || ext == ".png")
         return FileType::Image;
 
+    if(ext == ".3d")
+        return FileType::LL3D;
     // these seem to be the same format, but with different uses
     if(ext == ".csp" || ext == ".ilf" || ext == ".tsf")
         return FileType::LLCompSprite;
@@ -305,6 +324,8 @@ std::string MainFrame::getFileTypeLabel(FileType type)
         case FileType::Image:
             return "image";
 
+        case FileType::LL3D:
+            return "LL 3D";
         case FileType::LLCompSprite:
             return "LL composite sprite";
         case FileType::LLResource:
