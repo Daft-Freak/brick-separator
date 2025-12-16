@@ -1,8 +1,13 @@
-#include <wx/dcclient.h>
+#include <wx/dcbuffer.h>
 #include <wx/graphics.h>
 #include <wx/rawbmp.h>
 
 #include "LLSInfoPanel.h"
+
+LLSInfoPanel::LLSInfoPanel(wxWindow *parent) : LLSInfoPanelBase(parent)
+{
+    spritePanel->SetBackgroundStyle(wxBG_STYLE_PAINT);
+}
 
 bool LLSInfoPanel::loadSprite(const uint8_t *data, size_t size)
 {
@@ -45,7 +50,7 @@ bool LLSInfoPanel::loadSprite(const uint8_t *data, size_t size)
 
 void LLSInfoPanel::onSpritePaint(wxPaintEvent &event)
 {
-    wxPaintDC dc(spritePanel);
+    wxBufferedPaintDC dc(spritePanel);
     wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 
     if(!gc)

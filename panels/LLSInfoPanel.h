@@ -7,7 +7,7 @@
 class LLSInfoPanel final : public LLSInfoPanelBase
 {
 public:
-    using LLSInfoPanelBase::LLSInfoPanelBase;
+    LLSInfoPanel(wxWindow *parent);
 
     bool loadSprite(const uint8_t *data, size_t size);
 

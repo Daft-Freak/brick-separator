@@ -1,4 +1,4 @@
-#include <wx/dcclient.h>
+#include <wx/dcbuffer.h>
 #include <wx/graphics.h>
 #include <wx/log.h>
 #include <wx/rawbmp.h>
@@ -9,6 +9,7 @@
 
 CSPInfoPanel::CSPInfoPanel(wxWindow *parent, FileSystem &fs) : CSPInfoPanelBase(parent), fs(fs)
 {
+    spritePanel->SetBackgroundStyle(wxBG_STYLE_PAINT);
 }
 
 bool CSPInfoPanel::loadFile(const uint8_t *data, size_t size)
@@ -69,7 +70,7 @@ bool CSPInfoPanel::loadFile(const uint8_t *data, size_t size)
 
 void CSPInfoPanel::onSpritePaint(wxPaintEvent &event)
 {
-    wxPaintDC dc(spritePanel);
+    wxBufferedPaintDC dc(spritePanel);
     wxGraphicsContext *gc = wxGraphicsContext::Create(dc);
 
     if(!gc)
