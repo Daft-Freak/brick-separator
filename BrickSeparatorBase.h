@@ -44,6 +44,7 @@ class MainFrameBase : public wxFrame
 	protected:
 		wxMenuBar* mainMenuBar;
 		wxMenu* fileMenu;
+		wxPanel* wrapperPanel;
 		wxTreeListCtrl* fileTree;
 		wxPanel* defaultInfoPanel;
 		wxStaticText* infoLabel;

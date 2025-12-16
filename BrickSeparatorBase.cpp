@@ -31,16 +31,20 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxHORIZONTAL );
 
-	fileTree = new wxTreeListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTL_DEFAULT_STYLE );
+	wrapperPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer12;
+	bSizer12 = new wxBoxSizer( wxHORIZONTAL );
+
+	fileTree = new wxTreeListCtrl( wrapperPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTL_DEFAULT_STYLE );
 	fileTree->SetMinSize( wxSize( 500,-1 ) );
 
 	fileTree->AppendColumn( _("Name"), wxCOL_WIDTH_AUTOSIZE, wxALIGN_LEFT, wxCOL_RESIZABLE|wxCOL_SORTABLE );
 	fileTree->AppendColumn( _("Type"), wxCOL_WIDTH_DEFAULT, wxALIGN_LEFT, wxCOL_RESIZABLE|wxCOL_SORTABLE );
 	fileTree->AppendColumn( _("Size"), wxCOL_WIDTH_DEFAULT, wxALIGN_RIGHT, wxCOL_RESIZABLE|wxCOL_SORTABLE );
 
-	bSizer1->Add( fileTree, 0, wxEXPAND | wxALL, 5 );
+	bSizer12->Add( fileTree, 0, wxEXPAND | wxALL, 5 );
 
-	defaultInfoPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	defaultInfoPanel = new wxPanel( wrapperPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxVERTICAL );
 
@@ -52,7 +56,13 @@ MainFrameBase::MainFrameBase( wxWindow* parent, wxWindowID id, const wxString& t
 	defaultInfoPanel->SetSizer( bSizer2 );
 	defaultInfoPanel->Layout();
 	bSizer2->Fit( defaultInfoPanel );
-	bSizer1->Add( defaultInfoPanel, 1, wxEXPAND, 5 );
+	bSizer12->Add( defaultInfoPanel, 1, wxEXPAND, 5 );
+
+
+	wrapperPanel->SetSizer( bSizer12 );
+	wrapperPanel->Layout();
+	bSizer12->Fit( wrapperPanel );
+	bSizer1->Add( wrapperPanel, 1, wxEXPAND | wxALL, 0 );
 
 
 	this->SetSizer( bSizer1 );

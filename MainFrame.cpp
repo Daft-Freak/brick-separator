@@ -83,7 +83,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
     {
         case FileType::Text:
         {
-            auto textPanel = new TextInfoPanel(this);
+            auto textPanel = new TextInfoPanel(wrapperPanel);
             newInfoPanel = textPanel;
 
             auto contents = fs.getFileContents(path.ToStdString());
@@ -100,7 +100,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
 
         case FileType::Image:
         {
-            auto imagePanel = new ImageInfoPanel(this);
+            auto imagePanel = new ImageInfoPanel(wrapperPanel);
             newInfoPanel = imagePanel;
 
             auto contents = fs.getFileContents(path.ToStdString());
@@ -119,7 +119,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
 
         case FileType::LL3D:
         {
-            auto panel3D = new Model3DInfoPanel(this, fs);
+            auto panel3D = new Model3DInfoPanel(wrapperPanel, fs);
             newInfoPanel = panel3D;
 
             auto stdPath = path.ToStdString();
@@ -135,7 +135,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
 
         case FileType::LLCompSprite:
         {
-            auto cspPanel = new CSPInfoPanel(this, fs);
+            auto cspPanel = new CSPInfoPanel(wrapperPanel, fs);
             newInfoPanel = cspPanel;
 
             auto contents = fs.getFileContents(path.ToStdString());
@@ -151,7 +151,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
         case FileType::LLResource:
         {
             // display file list
-            auto textPanel = new TextInfoPanel(this);
+            auto textPanel = new TextInfoPanel(wrapperPanel);
             newInfoPanel = textPanel;
 
             RESFile resFile;
@@ -175,7 +175,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
 
         case FileType::LLSprite:
         {
-            auto spritePanel = new LLSInfoPanel(this);
+            auto spritePanel = new LLSInfoPanel(wrapperPanel);
             newInfoPanel = spritePanel;
 
             auto contents = fs.getFileContents(path.ToStdString());
@@ -210,7 +210,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
     }
 
     // switch panels
-    GetSizer()->Replace(curInfoPanel, newInfoPanel);
+    wrapperPanel->GetSizer()->Replace(curInfoPanel, newInfoPanel);
 
     // clean up non-default panel
     if(curInfoPanel != defaultInfoPanel)
