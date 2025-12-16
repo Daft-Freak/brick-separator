@@ -29,4 +29,7 @@ find_package(wxWidgets REQUIRED COMPONENTS base core gl)
 find_package(OpenGL REQUIRED)
 target_link_libraries(BrickSeparator PRIVATE wxWidgets::wxWidgets OpenGL::GL)
 
+# set DPI awareness for windows/vs
+set_property(TARGET BrickSeparator PROPERTY VS_DPI_AWARE "PerMonitor")
+
 install(TARGETS BrickSeparator)
