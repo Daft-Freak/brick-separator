@@ -228,7 +228,7 @@ Model3DInfoPanelBase::Model3DInfoPanelBase( wxWindow* parent, wxWindowID id, con
 
 	wxGLAttributes attribs;
 	attribs.PlatformDefaults().Depth(16).EndList();
-	glCanvas = new wxGLCanvas(this, attribs);
+	glCanvas = new wxGLCanvas(this, attribs, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxFULL_REPAINT_ON_RESIZE);
 	bSizer3->Add( glCanvas, 1, wxALL|wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer8;
