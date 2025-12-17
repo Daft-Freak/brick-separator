@@ -302,3 +302,52 @@ Model3DInfoPanelBase::Model3DInfoPanelBase( wxWindow* parent, wxWindowID id, con
 Model3DInfoPanelBase::~Model3DInfoPanelBase()
 {
 }
+
+CRDInfoPanelBase::CRDInfoPanelBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+{
+	wxBoxSizer* bSizer3;
+	bSizer3 = new wxBoxSizer( wxVERTICAL );
+
+	scrollWindow = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	scrollWindow->SetScrollRate( 5, 5 );
+	scrollWindow->SetMaxSize( wxSize( -1,200 ) );
+
+	wxBoxSizer* bSizer13;
+	bSizer13 = new wxBoxSizer( wxVERTICAL );
+
+	cardPanel = new wxPanel( scrollWindow, wxID_ANY, wxDefaultPosition, wxSize( 300,200 ), wxTAB_TRAVERSAL );
+	bSizer13->Add( cardPanel, 0, wxALL, 0 );
+
+
+	scrollWindow->SetSizer( bSizer13 );
+	scrollWindow->Layout();
+	bSizer13->Fit( scrollWindow );
+	bSizer3->Add( scrollWindow, 1, wxEXPAND | wxALL, 5 );
+
+	imageInfoLabel = new wxStaticText( this, wxID_ANY, _("An amazing postcard!"), wxDefaultPosition, wxDefaultSize, 0 );
+	imageInfoLabel->Wrap( -1 );
+	bSizer3->Add( imageInfoLabel, 0, wxALL, 5 );
+
+	wxBoxSizer* bSizer18;
+	bSizer18 = new wxBoxSizer( wxHORIZONTAL );
+
+	stampBitmap = new wxStaticBitmap( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer18->Add( stampBitmap, 0, wxALL, 5 );
+
+	markBitmap = new wxStaticBitmap( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer18->Add( markBitmap, 0, wxALL, 5 );
+
+
+	bSizer3->Add( bSizer18, 0, wxEXPAND, 0 );
+
+
+	this->SetSizer( bSizer3 );
+	this->Layout();
+
+	// Connect Events
+	cardPanel->Connect( wxEVT_PAINT, wxPaintEventHandler( CRDInfoPanelBase::onCardPaint ), NULL, this );
+}
+
+CRDInfoPanelBase::~CRDInfoPanelBase()
+{
+}

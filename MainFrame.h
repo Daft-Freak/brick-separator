@@ -25,6 +25,7 @@ private:
         LLSprite,
 
         // loco
+        LocoCard,
         LocoResource, // RFD/RFH
     };
 

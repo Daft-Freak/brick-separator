@@ -9,6 +9,7 @@
 #include "filesystem/RESMount.h"
 #include "filesystem/RFDMount.h"
 
+#include "panels/CRDInfoPanel.h"
 #include "panels/CSPInfoPanel.h"
 #include "panels/InfoPanel.h"
 #include "panels/LLSInfoPanel.h"
@@ -188,6 +189,20 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             break;
         }
 
+        case FileType::LocoCard:
+        {
+            auto panel3D = new CRDInfoPanel(wrapperPanel, fs);
+            newInfoPanel = panel3D;
+
+            auto contents = fs.getFileContents(path);
+
+            if(contents)
+                panel3D->loadFile(contents->data(), contents->size());
+            else
+                panel3D->loadFile(nullptr, 0);
+            break;
+        }
+
         case FileType::LocoResource:
         {
             // display file list
@@ -345,13 +360,22 @@ MainFrame::FileType MainFrame::identifyFile(std::string path, uint32_t size)
     if(ext == ".lls")
         return FileType::LLSprite;
 
-    if(ext == ".rfd")
-        return FileType::LocoResource;
+    if(ext == ".crd")
+    {
+        // the smaller files are text (lists of cards for the easter egg characters)
+        if(size < 200)
+            return FileType::Text;
+        else
+            return FileType::LocoCard;
+    }
 
     // loco .dat files are text
     // we don't have any game detection yet, so just make sure they're small
     if(ext == ".dat" && size < 2048)
         return FileType::Text;
+
+    if(ext == ".rfd")
+        return FileType::LocoResource;
 
     return FileType::Unknown;
 }
@@ -374,6 +398,8 @@ std::string MainFrame::getFileTypeLabel(FileType type)
         case FileType::LLSprite:
             return "LL sprite";
 
+        case FileType::LocoCard:
+            return "Loco card";
         case FileType::LocoResource:
             return "Loco resource";
 

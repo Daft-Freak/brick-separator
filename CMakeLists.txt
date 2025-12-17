@@ -16,6 +16,7 @@ add_executable(BrickSeparator WIN32
     formats/RESFile.cpp
     formats/RFDFile.cpp
 
+    panels/CRDInfoPanel.cpp
     panels/CSPInfoPanel.cpp
     panels/InfoPanel.cpp
     panels/LLSInfoPanel.cpp
