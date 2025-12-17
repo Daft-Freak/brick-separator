@@ -299,7 +299,7 @@ void MainFrame::buildFileList(std::filesystem::path path, wxTreeListItem parent)
         // show size and try to identify type if not a dir
         if(!file.isDir)
         {
-            type = identifyFile(itemPath.generic_string());
+            type = identifyFile(itemPath.generic_string(), file.size);
             fileTree->SetItemText(newItem, 2, std::to_string(file.size));
         }
 
@@ -323,7 +323,7 @@ void MainFrame::buildFileList(std::filesystem::path path, wxTreeListItem parent)
     }
 }
 
-MainFrame::FileType MainFrame::identifyFile(std::string path)
+MainFrame::FileType MainFrame::identifyFile(std::string path, uint32_t size)
 {
     // get extension
     auto ext = std::filesystem::path(path).extension().string();
@@ -347,6 +347,11 @@ MainFrame::FileType MainFrame::identifyFile(std::string path)
 
     if(ext == ".rfd")
         return FileType::LocoResource;
+
+    // loco .dat files are text
+    // we don't have any game detection yet, so just make sure they're small
+    if(ext == ".dat" && size < 2048)
+        return FileType::Text;
 
     return FileType::Unknown;
 }

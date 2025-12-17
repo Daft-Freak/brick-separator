@@ -42,7 +42,7 @@ private:
 
     void buildFileList(std::filesystem::path path, wxTreeListItem parent);
 
-    FileType identifyFile(std::string path);
+    FileType identifyFile(std::string path, uint32_t size);
     std::string getFileTypeLabel(FileType type);
 
     FileSystem fs;
