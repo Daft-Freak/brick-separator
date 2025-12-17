@@ -338,9 +338,9 @@ MainFrame::FileType MainFrame::identifyFile(std::string path)
     // lowercase
     std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
 
-    if(ext == ".txt" || ext == ".str"/*legoland*/)
+    if(ext == ".txt" || ext == ".ini" || ext == ".str"/*legoland*/)
         return FileType::Text;
-    if(ext == ".bmp" || ext == ".png")
+    if(ext == ".bmp" || ext == ".png" || ext == ".but"/*loco*/)
         return FileType::Image;
 
     if(ext == ".3d")
