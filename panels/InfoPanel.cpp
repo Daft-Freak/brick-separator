@@ -51,4 +51,6 @@ void ImageInfoPanel::setImage(const wxImage &image)
     auto type = bitmapTypeName(image.GetType());
 
     imageInfoLabel->SetLabel(wxString::Format("%ix%i %s", size.GetWidth(), size.GetHeight(), type));
+
+    scrollWindow->SetMaxSize(bitmap->GetSize());
 }

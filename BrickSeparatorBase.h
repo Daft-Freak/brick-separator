@@ -26,6 +26,7 @@
 #include <wx/frame.h>
 #include <wx/textctrl.h>
 #include <wx/statbmp.h>
+#include <wx/scrolwin.h>
 #include <wx/tglbtn.h>
 #include <wx/slider.h>
 #include <wx/timer.h>
@@ -89,6 +90,7 @@ class ImageInfoPanelBase : public wxPanel
 	private:
 
 	protected:
+		wxScrolledWindow* scrollWindow;
 		wxStaticBitmap* bitmap;
 		wxStaticText* imageInfoLabel;
 

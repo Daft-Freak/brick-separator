@@ -102,8 +102,19 @@ ImageInfoPanelBase::ImageInfoPanelBase( wxWindow* parent, wxWindowID id, const w
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxVERTICAL );
 
-	bitmap = new wxStaticBitmap( this, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer3->Add( bitmap, 0, wxALL, 5 );
+	scrollWindow = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
+	scrollWindow->SetScrollRate( 5, 5 );
+	wxBoxSizer* bSizer13;
+	bSizer13 = new wxBoxSizer( wxVERTICAL );
+
+	bitmap = new wxStaticBitmap( scrollWindow, wxID_ANY, wxNullBitmap, wxDefaultPosition, wxDefaultSize, 0 );
+	bSizer13->Add( bitmap, 0, wxALL, 0 );
+
+
+	scrollWindow->SetSizer( bSizer13 );
+	scrollWindow->Layout();
+	bSizer13->Fit( scrollWindow );
+	bSizer3->Add( scrollWindow, 1, wxEXPAND | wxALL, 5 );
 
 	imageInfoLabel = new wxStaticText( this, wxID_ANY, _("An amazing image!"), wxDefaultPosition, wxDefaultSize, 0 );
 	imageInfoLabel->Wrap( -1 );
