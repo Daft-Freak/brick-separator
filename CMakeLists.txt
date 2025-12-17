@@ -9,6 +9,7 @@ add_executable(BrickSeparator WIN32
     filesystem/RESMount.cpp
     filesystem/RFDMount.cpp
 
+    formats/CRDFile.cpp
     formats/CSPFile.cpp
     formats/LLSFile.cpp
     formats/Model3DFile.cpp
