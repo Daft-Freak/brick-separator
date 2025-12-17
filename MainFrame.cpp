@@ -7,6 +7,7 @@
 
 #include "filesystem/FileSystem.h"
 #include "filesystem/RESMount.h"
+#include "filesystem/RFDMount.h"
 
 #include "panels/CSPInfoPanel.h"
 #include "panels/InfoPanel.h"
@@ -189,6 +190,36 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             break;
         }
 
+        case FileType::LocoResource:
+        {
+            // display file list
+            auto textPanel = new TextInfoPanel(wrapperPanel);
+            newInfoPanel = textPanel;
+
+            RFDFile resFile;
+            if(resFile.load(fs.getRealPath(path.ToStdString())))
+            {
+                wxString text;
+                auto entries = resFile.getEntries();
+                for(auto &ent : entries)
+                {
+                    // insert a blank line on dir change
+                    if(!text.empty() && ent.first.back() == '/')
+                        text << "\n";
+                    text << ent.first << " offset " << ent.second.offset << " size " << ent.second.size;
+                    
+                    if(ent.second.flags & 1)
+                        text << " (compressed)";
+
+                    text << "\n";
+                }
+                textPanel->setText(text);
+            }
+            else
+                textPanel->setText("Failed to read...");
+            break;
+        }
+
         case FileType::Unknown:
         default:
         {
@@ -238,6 +269,15 @@ void MainFrame::onFileActivated(wxTreeListEvent &event)
         // mount the resource on top of itself
         auto resPath = fs.getRealPath(path);
         fs.mount(std::make_shared<RESMount>(resPath), path + "/");
+
+        // update tree
+        buildFileList(path, item);
+    }
+    else if(type == FileType::LocoResource)
+    {
+        // mount the resource on top of itself
+        auto resPath = fs.getRealPath(path);
+        fs.mount(std::make_shared<RFDMount>(resPath), path + "/");
 
         // update tree
         buildFileList(path, item);
@@ -313,6 +353,9 @@ MainFrame::FileType MainFrame::identifyFile(std::string path)
     if(ext == ".lls")
         return FileType::LLSprite;
 
+    if(ext == ".rfd")
+        return FileType::LocoResource;
+
     return FileType::Unknown;
 }
 
@@ -333,6 +376,9 @@ std::string MainFrame::getFileTypeLabel(FileType type)
             return "LL resource";
         case FileType::LLSprite:
             return "LL sprite";
+
+        case FileType::LocoResource:
+            return "Loco resource";
 
         default:
             return "";

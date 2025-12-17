@@ -7,6 +7,7 @@ project(BrickSeparator)
 add_executable(BrickSeparator WIN32
     filesystem/FileSystem.cpp
     filesystem/RESMount.cpp
+    filesystem/RFDMount.cpp
 
     formats/CSPFile.cpp
     formats/LLSFile.cpp

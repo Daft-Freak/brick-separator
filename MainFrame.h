@@ -23,6 +23,9 @@ private:
         LLCompSprite,
         LLResource,
         LLSprite,
+
+        // loco
+        LocoResource, // RFD/RFH
     };
 
     // events
