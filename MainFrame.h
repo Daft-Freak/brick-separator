@@ -28,14 +28,19 @@ private:
         LocoResource, // RFD/RFH
     };
 
+    class FileItemData final : public wxClientData
+    {
+    public:
+        std::string path;
+        FileType type;
+    };
+
     // events
     void onOpenFolder(wxCommandEvent &event) override;
     void onFileSelectionChanged(wxTreeListEvent &event) override;
     void onFileActivated(wxTreeListEvent &event) override;
 
     void buildFileList(std::filesystem::path path, wxTreeListItem parent);
-
-    wxString getFileTreeItemPath(wxTreeListItem item);
 
     FileType identifyFile(std::string path);
     std::string getFileTypeLabel(FileType type);

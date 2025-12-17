@@ -73,9 +73,9 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
     // build path from tree
     auto item = event.GetItem();
 
-    auto path = getFileTreeItemPath(item);
-
-    auto type = identifyFile(path.ToStdString());
+    auto data = static_cast<FileItemData *>(fileTree->GetItemData(item));
+    auto path = data->path;
+    auto type = data->type;
 
     wxPanel *newInfoPanel = nullptr;
 
@@ -87,7 +87,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             auto textPanel = new TextInfoPanel(wrapperPanel);
             newInfoPanel = textPanel;
 
-            auto contents = fs.getFileContents(path.ToStdString());
+            auto contents = fs.getFileContents(path);
 
             if(contents)
             {
@@ -104,7 +104,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             auto imagePanel = new ImageInfoPanel(wrapperPanel);
             newInfoPanel = imagePanel;
 
-            auto contents = fs.getFileContents(path.ToStdString());
+            auto contents = fs.getFileContents(path);
             wxImage image;
 
             if(contents)
@@ -123,12 +123,10 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             auto panel3D = new Model3DInfoPanel(wrapperPanel, fs);
             newInfoPanel = panel3D;
 
-            auto stdPath = path.ToStdString();
-
-            auto contents = fs.getFileContents(stdPath);
+            auto contents = fs.getFileContents(path);
 
             if(contents)
-                panel3D->loadFile(contents->data(), contents->size(), stdPath);
+                panel3D->loadFile(contents->data(), contents->size(), path);
             else
                 panel3D->loadFile(nullptr, 0, "");
             break;
@@ -139,7 +137,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             auto cspPanel = new CSPInfoPanel(wrapperPanel, fs);
             newInfoPanel = cspPanel;
 
-            auto contents = fs.getFileContents(path.ToStdString());
+            auto contents = fs.getFileContents(path);
 
             if(contents)
                 cspPanel->loadFile(contents->data(), contents->size());
@@ -156,7 +154,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             newInfoPanel = textPanel;
 
             RESFile resFile;
-            if(resFile.load(fs.getRealPath(path.ToStdString())))
+            if(resFile.load(fs.getRealPath(path)))
             {
                 wxString text;
                 auto entries = resFile.getEntries();
@@ -179,7 +177,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             auto spritePanel = new LLSInfoPanel(wrapperPanel);
             newInfoPanel = spritePanel;
 
-            auto contents = fs.getFileContents(path.ToStdString());
+            auto contents = fs.getFileContents(path);
             wxImage image;
 
             if(contents)
@@ -197,7 +195,7 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
             newInfoPanel = textPanel;
 
             RFDFile resFile;
-            if(resFile.load(fs.getRealPath(path.ToStdString())))
+            if(resFile.load(fs.getRealPath(path)))
             {
                 wxString text;
                 auto entries = resFile.getEntries();
@@ -257,9 +255,11 @@ void MainFrame::onFileSelectionChanged(wxTreeListEvent &event)
 void MainFrame::onFileActivated(wxTreeListEvent &event)
 {
     auto item = event.GetItem();
-    auto path = getFileTreeItemPath(item).ToStdString();
 
-    auto type = identifyFile(path);
+    auto data = static_cast<FileItemData *>(fileTree->GetItemData(item));
+    auto path = data->path;
+    auto type = data->type;
+
     // if the item already has children, do nothing
     if(fileTree->GetFirstChild(item).IsOk())
         return;
@@ -310,25 +310,17 @@ void MainFrame::buildFileList(std::filesystem::path path, wxTreeListItem parent)
         else
             fileTree->SetItemText(newItem, 1, getFileTypeLabel(type));
 
+        // store path/type as item data
+        auto itemData = new FileItemData;
+        itemData->path = itemPath.generic_string();
+        itemData->type = type;
+        fileTree->SetItemData(newItem, itemData);
+
         // recurse
         // treat resource files as directories (in case they're mounted)
         if(file.isDir || type == FileType::LLResource)
             buildFileList(itemPath, newItem);
     }
-}
-
-wxString MainFrame::getFileTreeItemPath(wxTreeListItem item)
-{
-    auto path = fileTree->GetItemText(item);
-
-    auto parent = fileTree->GetItemParent(item);
-    while(parent != fileTree->GetRootItem())
-    {
-        path = fileTree->GetItemText(parent) + "/" + path;
-        parent = fileTree->GetItemParent(parent);
-    }
-
-    return path;
 }
 
 MainFrame::FileType MainFrame::identifyFile(std::string path)
